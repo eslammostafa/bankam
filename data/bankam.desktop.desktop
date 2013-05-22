@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=DoMore
+Exec=domore
+Type=Application
+Version=1.0
+Comment=Pomodoro Timer
+GenericName=DoMore
+Terminal=false
+Categories=GNOME;GTK;Utility;Development;
+Icon=/usr/share/icons/hicolor/scalable/apps/domore.png
+
+Name[en_US]=bankam.desktop
