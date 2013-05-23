@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Bankam
+Exec=bankam
+Type=Application
+Version=1.0
+Comment=Pomodoro Timer
+GenericName=Bankam
+Terminal=false
+Categories=GNOME;GTK;Utility;Development;
+Icon=/usr/share/icons/hicolor/scalable/apps/bankam.png
+
+Name[en_US]=Bankam
