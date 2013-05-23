@@ -9,7 +9,3 @@ class Bankam(Gtk.Application):
     def do_activate(self):
         win = Window(self)
         win.present()
-
-if __name__ == '__main__':
-    app = Bankam()
-    sys.exit(app.run(sys.argv))
