@@ -95,12 +95,3 @@ class Window(Gtk.ApplicationWindow):
         if not os.path.exists(path):
             path = '../data/'
         return path
-
-class App(Gtk.Application):
-    def __init__(self):
-        Gtk.Application.__init__(self)
-
-    def do_activate(self):
-        win = Window(self)
-        win.present()
-

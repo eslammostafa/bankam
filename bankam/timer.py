@@ -1,8 +1,22 @@
 from gi.repository import Gtk, Gio, Gst, GObject, Notify
-import time
+import time, subprocess
 
 LABEL_MARKUP = "<span font_desc=\"64.0\">%02i:%02i</span>"
 SOUND_FILE = "/usr/share/sounds/gnome/alerts/drip.ogg"
+
+class Alert():
+    def __init__(self):
+        Notify.init('bankam')
+        self._n = Notify.Notification.new('Bankam', 'Ding ! time is ticking.', '')
+
+    def playSound(self):
+        subprocess.call(["/usr/bin/canberra-gtk-play", "--file", "/usr/share/sounds/gnome/default/alerts/drip.ogg"])
+
+    def run(self):
+        self._n.show()
+        self.playSound()
+        time.sleep(15)
+        self._n.close()
 
 class Timer(Gtk.Box):
     def __init__(self):
@@ -46,20 +60,3 @@ class Timer(Gtk.Box):
         if self.timeout_id:
             GObject.source_remove(self.timeout_id)
         self.timeLabel.set_markup(LABEL_MARKUP % (0, 0))
-
-class Alert():
-    def __init__(self):
-        Notify.init('bankam')
-        self._n = Notify.Notification.new('Bankam', 'Ding ! time is ticking.', '')
-        #Gst.init(None)
-        #gst = Gst.ElementFactory.make('playbin2', 'player')
-        #gst.set_property('uri', SOUND_FILE)
-        #gst.set_state(Gst.STATE_PLAYING)
-
-    def run(self):
-        self._n.show()
-        #gst.set_state(Gst.STATE_PLAYING)
-        time.sleep(15)
-        #gst.set_state(Gste.STATE_NULL)
-        #Notify.uninit()
-        self._n.close()
