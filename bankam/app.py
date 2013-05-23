@@ -1,5 +1,6 @@
 from gi.repository import Gtk, Gio, Gdk
 from timer import Timer
+from logger import Logger
 import os
 import sys
 
@@ -9,7 +10,7 @@ LONG_BREAK_COUNT = 15
 
 class Window(Gtk.ApplicationWindow):
     def __init__(self, app):
-        Gtk.ApplicationWindow.__init__(self, title="DoMore",
+        Gtk.ApplicationWindow.__init__(self, title="Baknam",
                                       application=app,
                                       hide_titlebar_when_maximized=True)
         self.set_default_size(460, 300)
@@ -24,7 +25,13 @@ class Window(Gtk.ApplicationWindow):
                                         css,
                                         Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
-        self.box = box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        container = Gtk.HBox()
+        self.logger = Logger()
+        revealer = Gtk.Revealer()
+        revealer.add(self.logger)
+        revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_RIGHT)
+        revealer.set_transition_duration(1000)
         builder = Gtk.Builder()
         builder.add_from_file(self.getDataFolder()+'toolbar.ui')
         self.toolbar = builder.get_object('toolbar')
@@ -36,11 +43,14 @@ class Window(Gtk.ApplicationWindow):
         self.timer = timer = Timer()
         eventbox.add(timer)
 
-        self.box.pack_start(self.toolbar, False, False, 0)
-        self.box.pack_start(eventbox, True, True, 0)
+        container.pack_start(revealer, False, False, 0)
+        container.pack_end(eventbox, True, True, 0)
+        box.pack_start(self.toolbar, False, False, 0)
+        box.pack_start(container, True, True, 0)
         self.add(box)
 
         self.show_all()
+        revealer.set_reveal_child(True)
         eventbox.grab_focus()
 
         self.pomodoroBtn.connect('clicked', self._onPomodoro)
@@ -53,18 +63,21 @@ class Window(Gtk.ApplicationWindow):
         self.shortBreakBtn.set_sensitive(True)
         self.longBreakBtn.set_sensitive(True)
         self.timer.setTimer(POMODORO_COUNT)
+        self.logger.push("Pomodoro session started")
 
     def _onShortBreak(self, btn):
         btn.set_sensitive(False)
         self.pomodoroBtn.set_sensitive(True)
         self.longBreakBtn.set_sensitive(True)
         self.timer.setTimer(SHORT_BREAK_COUNT)
+        self.logger.push("Short break started")
 
     def _onLongBreak(self, btn):
         btn.set_sensitive(False)
         self.pomodoroBtn.set_sensitive(True)
         self.shortBreakBtn.set_sensitive(True)
         self.timer.setTimer(LONG_BREAK_COUNT)
+        self.logger.push("Long Break started")
 
     def _onClear(self, btn):
         self.timer.clear()
@@ -88,3 +101,7 @@ class App(Gtk.Application):
     def do_activate(self):
         win = Window(self)
         win.present()
+
+if __name__ == '__main__':
+    app = App()
+    sys.exit(app.run(sys.argv))

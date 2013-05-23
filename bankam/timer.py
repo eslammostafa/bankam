@@ -1,7 +1,8 @@
-from gi.repository import Gtk, Gio, GObject, Notify
+from gi.repository import Gtk, Gio, Gst, GObject, Notify
 import time
 
 LABEL_MARKUP = "<span font_desc=\"64.0\">%02i:%02i</span>"
+SOUND_FILE = "/usr/share/sounds/gnome/alerts/drip.ogg"
 
 class Timer(Gtk.Box):
     def __init__(self):
@@ -32,7 +33,7 @@ class Timer(Gtk.Box):
 
     def countDown(self):
         if self.time == 0:
-            self.alert.show()
+            self.alert.run()
             return False
         else:
             self.time -= 1
@@ -48,11 +49,18 @@ class Timer(Gtk.Box):
 
 class Alert():
     def __init__(self):
-        Notify.init('domore')
-        self.n = Notify.Notification.new('DoMore', 'Ding !', None)
+        Notify.init('bankam')
+        self._n = Notify.Notification.new('Bankam', 'Ding ! time is ticking.', '')
+        self._n.show()
+        #Gst.init(None)
+        #gst = Gst.ElementFactory.make('playbin2', 'player')
+        #gst.set_property('uri', SOUND_FILE)
+        #gst.set_state(Gst.STATE_PLAYING)
 
-    def show(self):
-        self.n.show()
+    def run(self):
+        self._n.show()
+        #gst.set_state(Gst.STATE_PLAYING)
         time.sleep(15)
+        #gst.set_state(Gste.STATE_NULL)
         #Notify.uninit()
-        self.n.close()
+        self._n.close()
