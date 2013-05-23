@@ -85,13 +85,13 @@ class Window(Gtk.ApplicationWindow):
         self.logger.push("Clear")
 
     def getIconPath(self):
-        path = '/usr/share/icons/hicolor/scalable/apps/domore.png'
+        path = '/usr/share/icons/hicolor/scalable/apps/bankam.png'
         if not os.path.exists(path):
-            path = os.getcwd()+'domore.png'
+            path = os.getcwd()+'bankam.png'
         return path
 
     def getDataFolder(self):
-        path = '/usr/share/domore/'
+        path = '/usr/share/bankam/'
         if not os.path.exists(path):
             path = '../data/'
         return path
