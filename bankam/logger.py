@@ -18,5 +18,5 @@ class Logger(Gtk.ScrolledWindow):
         self.show_all()
 
     def push(self, string):
-        self._iter = self._model.append(None, [string, time.strftime("%H:%M")])
+        self._iter = self._model.prepend(None, [string, time.strftime("%H:%M")])
         self.show_all()
