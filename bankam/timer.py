@@ -51,7 +51,6 @@ class Alert():
     def __init__(self):
         Notify.init('bankam')
         self._n = Notify.Notification.new('Bankam', 'Ding ! time is ticking.', '')
-        self._n.show()
         #Gst.init(None)
         #gst = Gst.ElementFactory.make('playbin2', 'player')
         #gst.set_property('uri', SOUND_FILE)

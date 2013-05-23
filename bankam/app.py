@@ -13,7 +13,7 @@ class Window(Gtk.ApplicationWindow):
         Gtk.ApplicationWindow.__init__(self, title="Baknam",
                                       application=app,
                                       hide_titlebar_when_maximized=True)
-        self.set_default_size(460, 300)
+        self.set_default_size(640, 480)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_icon_from_file(self.getIconPath())
         
@@ -30,7 +30,7 @@ class Window(Gtk.ApplicationWindow):
         self.logger = Logger()
         revealer = Gtk.Revealer()
         revealer.add(self.logger)
-        revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_RIGHT)
+        revealer.set_transition_type(Gtk.RevealerTransitionType.SLIDE_LEFT)
         revealer.set_transition_duration(1000)
         builder = Gtk.Builder()
         builder.add_from_file(self.getDataFolder()+'toolbar.ui')
@@ -43,8 +43,9 @@ class Window(Gtk.ApplicationWindow):
         self.timer = timer = Timer()
         eventbox.add(timer)
 
+        container.pack_start(eventbox, True, True, 0)
+        container.pack_start(Gtk.VSeparator(), False, False, 0)
         container.pack_start(revealer, False, False, 0)
-        container.pack_end(eventbox, True, True, 0)
         box.pack_start(self.toolbar, False, False, 0)
         box.pack_start(container, True, True, 0)
         self.add(box)
@@ -63,24 +64,25 @@ class Window(Gtk.ApplicationWindow):
         self.shortBreakBtn.set_sensitive(True)
         self.longBreakBtn.set_sensitive(True)
         self.timer.setTimer(POMODORO_COUNT)
-        self.logger.push("Pomodoro session started")
+        self.logger.push("Pomodoro...")
 
     def _onShortBreak(self, btn):
         btn.set_sensitive(False)
         self.pomodoroBtn.set_sensitive(True)
         self.longBreakBtn.set_sensitive(True)
         self.timer.setTimer(SHORT_BREAK_COUNT)
-        self.logger.push("Short break started")
+        self.logger.push("Short break...")
 
     def _onLongBreak(self, btn):
         btn.set_sensitive(False)
         self.pomodoroBtn.set_sensitive(True)
         self.shortBreakBtn.set_sensitive(True)
         self.timer.setTimer(LONG_BREAK_COUNT)
-        self.logger.push("Long Break started")
+        self.logger.push("Long break...")
 
     def _onClear(self, btn):
         self.timer.clear()
+        self.logger.push("Clear")
 
     def getIconPath(self):
         path = '/usr/share/icons/hicolor/scalable/apps/domore.png'
