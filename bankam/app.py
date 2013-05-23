@@ -4,13 +4,13 @@ from logger import Logger
 import os
 import sys
 
-POMODORO_COUNT = 25
-SHORT_BREAK_COUNT = 5
-LONG_BREAK_COUNT = 15
+POMODORO_COUNT = 25 #Pomodoro session in minutes
+SHORT_BREAK_COUNT = 5 #Short break session in minutes
+LONG_BREAK_COUNT = 15 #Long break session in minutes
 
 class Window(Gtk.ApplicationWindow):
     def __init__(self, app):
-        Gtk.ApplicationWindow.__init__(self, title="Baknam",
+        Gtk.ApplicationWindow.__init__(self, title="Bankam",
                                       application=app,
                                       hide_titlebar_when_maximized=True)
         self.set_default_size(640, 480)
@@ -104,6 +104,3 @@ class App(Gtk.Application):
         win = Window(self)
         win.present()
 
-if __name__ == '__main__':
-    app = App()
-    sys.exit(app.run(sys.argv))
